@@ -1,26 +1,27 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Windows Build CI
 
-# Controls when the workflow will run
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: windows-latest
-    
-    # Steps represent a sequence of tasks that will be executed as part of the job
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: krdlab/setup-haxe@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Haxe
+        uses: krdlab/setup-haxe@v1
         with:
           haxe-version: 4.1.5
-      # Runs a set of commands using the runners shell
-      - name: script run line haha
+
+      - name: Install Haxe Libraries
         run: |
           cinst haxe --version 4.1.5 -y
           RefreshEnv
@@ -45,11 +46,14 @@ jobs:
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
           haxelib install actuate 
-          haxelib install newgrounds 2.0.1
+
+      - name: Build
+        run: |
           haxelib list
           haxelib run lime build windows
-          
-      - uses: actions/upload-artifact@v2
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: Windows Build
           path: export/release/windows/bin
