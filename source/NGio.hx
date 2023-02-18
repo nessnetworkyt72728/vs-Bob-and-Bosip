@@ -9,8 +9,8 @@ import io.newgrounds.objects.Medal;
 import io.newgrounds.objects.Score;
 import io.newgrounds.objects.ScoreBoard;
 import io.newgrounds.objects.events.Response;
-import io.newgrounds.objects.events.Result.GetCurrentVersionResult;
-import io.newgrounds.objects.events.Result.GetVersionResult;
+import io.newgrounds.objects.events.Result.GetCurrentVersionData;
+import io.newgrounds.objects.events.Result.GetVersionData;
 import lime.app.Application;
 import openfl.display.Stage;
 
@@ -44,7 +44,7 @@ class NGio
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				var call = NG.core.calls.app.getCurrentVersion(GAME_VER).addDataHandler(function(response:Response<GetCurrentVersionResult>)
+				var call = NG.core.calls.app.getCurrentVersion(GAME_VER).addStatusHandler(function(response:Response<GetCurrentVersionResult>)
 				{
 					GAME_VER = response.result.data.currentVersion;
 					GAME_VER_NUMS = GAME_VER.split(" ")[0].trim();
